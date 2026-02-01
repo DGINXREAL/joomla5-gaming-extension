@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+    <name>COM_GAMES</name>
+    <author>Gaming Extension</author>
+    <creationDate>2026-02-01</creationDate>
+    <version>1.0.0</version>
+    <description>COM_GAMES_DESCRIPTION</description>
+    <namespace path="src">DGInxreal\Component\Games</namespace>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.sql</file>
+        </sql>
+    </uninstall>
+
+    <files folder="site">
+        <folder>language</folder>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <administration>
+        <menu>COM_GAMES</menu>
+        <submenu>
+            <menu link="option=com_games&amp;view=games">COM_GAMES_MENU_GAMES</menu>
+        </submenu>
+        <files folder="admin">
+            <folder>forms</folder>
+            <folder>language</folder>
+            <folder>services</folder>
+            <folder>sql</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+    </administration>
+</extension>
