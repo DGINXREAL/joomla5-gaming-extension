@@ -21,6 +21,8 @@ HTMLHelper::_('behavior.keepalive');
                 <?php echo $this->form->renderField('name'); ?>
                 <?php echo $this->form->renderField('slug'); ?>
                 <?php echo $this->form->renderField('release_date'); ?>
+                <?php echo $this->form->renderField('developers'); ?>
+                <?php echo $this->form->renderField('publishers'); ?>
                 <?php echo $this->form->renderField('image'); ?>
                 <?php echo $this->form->renderField('description'); ?>
             </div>

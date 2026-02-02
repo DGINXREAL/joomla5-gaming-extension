@@ -32,3 +32,17 @@ CREATE TABLE IF NOT EXISTS `#__game_companies` (
     UNIQUE KEY `idx_slug` (`slug`),
     KEY `idx_state` (`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `#__game_developers` (
+    `game_id` int unsigned NOT NULL,
+    `company_id` int unsigned NOT NULL,
+    PRIMARY KEY (`game_id`, `company_id`),
+    KEY `idx_company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `#__game_publishers` (
+    `game_id` int unsigned NOT NULL,
+    `company_id` int unsigned NOT NULL,
+    PRIMARY KEY (`game_id`, `company_id`),
+    KEY `idx_company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
