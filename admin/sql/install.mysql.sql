@@ -13,3 +13,22 @@ CREATE TABLE IF NOT EXISTS `#__games` (
     UNIQUE KEY `idx_slug` (`slug`),
     KEY `idx_state` (`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `#__game_companies` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL DEFAULT '',
+    `slug` varchar(255) NOT NULL DEFAULT '',
+    `abbreviation` varchar(50) NOT NULL DEFAULT '',
+    `founded_at` date DEFAULT NULL,
+    `deck` text NOT NULL,
+    `description` text NOT NULL,
+    `image_id` varchar(1024) NOT NULL DEFAULT '',
+    `phone` varchar(100) NOT NULL DEFAULT '',
+    `website` varchar(1024) NOT NULL DEFAULT '',
+    `state` tinyint NOT NULL DEFAULT 1,
+    `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_slug` (`slug`),
+    KEY `idx_state` (`state`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;

@@ -13,8 +13,10 @@ class Router extends RouterBase
         $segments = [];
 
         if (isset($query['view'])) {
-            if ($query['view'] === 'game') {
-                $segments[] = 'game';
+            $view = $query['view'];
+
+            if ($view === 'game' || $view === 'company') {
+                $segments[] = $view;
 
                 if (isset($query['slug'])) {
                     $segments[] = $query['slug'];
@@ -32,8 +34,8 @@ class Router extends RouterBase
     {
         $vars = [];
 
-        if (count($segments) >= 1 && $segments[0] === 'game') {
-            $vars['view'] = 'game';
+        if (count($segments) >= 1 && in_array($segments[0], ['game', 'company'])) {
+            $vars['view'] = $segments[0];
 
             if (isset($segments[1])) {
                 $vars['slug'] = $segments[1];

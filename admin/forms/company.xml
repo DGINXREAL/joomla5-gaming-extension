@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+            name="id"
+            type="hidden"
+            default="0"
+        />
+
+        <field
+            name="name"
+            type="text"
+            label="COM_GAMES_FIELD_NAME_LABEL"
+            required="true"
+        />
+
+        <field
+            name="slug"
+            type="text"
+            label="COM_GAMES_FIELD_SLUG_LABEL"
+            hint="COM_GAMES_FIELD_SLUG_HINT"
+        />
+
+        <field
+            name="abbreviation"
+            type="text"
+            label="COM_GAMES_FIELD_ABBREVIATION_LABEL"
+        />
+
+        <field
+            name="founded_at"
+            type="calendar"
+            label="COM_GAMES_FIELD_FOUNDED_AT_LABEL"
+            format="%Y-%m-%d"
+            translateformat="false"
+            showtime="false"
+        />
+
+        <field
+            name="deck"
+            type="textarea"
+            label="COM_GAMES_FIELD_DECK_LABEL"
+            rows="3"
+            filter="string"
+        />
+
+        <field
+            name="description"
+            type="editor"
+            label="COM_GAMES_FIELD_DESCRIPTION_LABEL"
+            filter="safehtml"
+            buttons="true"
+        />
+
+        <field
+            name="image_id"
+            type="media"
+            label="COM_GAMES_FIELD_IMAGE_LABEL"
+        />
+
+        <field
+            name="phone"
+            type="tel"
+            label="COM_GAMES_FIELD_PHONE_LABEL"
+        />
+
+        <field
+            name="website"
+            type="url"
+            label="COM_GAMES_FIELD_WEBSITE_LABEL"
+        />
+
+        <field
+            name="state"
+            type="list"
+            label="JSTATUS"
+            default="1"
+        >
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+            <option value="-2">JTRASHED</option>
+        </field>
+    </fieldset>
+</form>
