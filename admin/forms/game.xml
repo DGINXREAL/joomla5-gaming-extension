@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form addfieldprefix="DGInxreal\Component\Games\Administrator\Field">
+<form>
     <fieldset name="details">
         <field
             name="id"
@@ -36,20 +36,6 @@
             label="COM_GAMES_FIELD_DESCRIPTION_LABEL"
             filter="safehtml"
             buttons="true"
-        />
-
-        <field
-            name="developers"
-            type="companies"
-            label="COM_GAMES_FIELD_DEVELOPERS_LABEL"
-            multiple="true"
-        />
-
-        <field
-            name="publishers"
-            type="companies"
-            label="COM_GAMES_FIELD_PUBLISHERS_LABEL"
-            multiple="true"
         />
 
         <field

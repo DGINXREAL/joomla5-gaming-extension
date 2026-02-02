@@ -13,14 +13,38 @@ class HtmlView extends BaseHtmlView
 {
     protected $form;
     protected $item;
+    public $developers = [];
+    public $publishers = [];
 
     public function display($tpl = null): void
     {
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
 
+        if ($this->item && $this->item->id) {
+            $db = Factory::getContainer()->get('DatabaseDriver');
+
+            $this->developers = $this->loadRelatedCompanies($db, '#__game_developers', (int) $this->item->id);
+            $this->publishers = $this->loadRelatedCompanies($db, '#__game_publishers', (int) $this->item->id);
+        }
+
         $this->addToolbar();
         parent::display($tpl);
+    }
+
+    private function loadRelatedCompanies($db, string $table, int $gameId): array
+    {
+        $query = $db->getQuery(true)
+            ->select('c.id, c.name')
+            ->from($db->quoteName($table, 'r'))
+            ->join('INNER', $db->quoteName('#__game_companies', 'c') . ' ON c.id = r.company_id')
+            ->where($db->quoteName('r.game_id') . ' = :gameId')
+            ->bind(':gameId', $gameId, \Joomla\Database\ParameterType::INTEGER)
+            ->order('c.name ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
     }
 
     protected function addToolbar(): void
