@@ -30,6 +30,7 @@
         <submenu>
             <menu link="option=com_games&amp;view=games">COM_GAMES_MENU_GAMES</menu>
             <menu link="option=com_games&amp;view=companies">COM_GAMES_MENU_COMPANIES</menu>
+            <menu link="option=com_games&amp;view=platforms">COM_GAMES_MENU_PLATFORMS</menu>
         </submenu>
         <files folder="admin">
             <folder>forms</folder>
