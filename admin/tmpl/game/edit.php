@@ -19,126 +19,99 @@ $publishers = $this->publishers;
 <form action="<?php echo Route::_('index.php?option=com_games&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="adminForm" class="form-validate">
 
-    <ul class="nav nav-tabs" id="gameTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">
-                <?php echo Text::_('COM_GAMES_TAB_DETAILS'); ?>
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="developers-tab" data-bs-toggle="tab" data-bs-target="#developers" type="button" role="tab">
-                <?php echo Text::_('COM_GAMES_FIELD_DEVELOPERS_LABEL'); ?>
-                <span class="badge bg-secondary" id="developers-count"><?php echo count($developers); ?></span>
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="publishers-tab" data-bs-toggle="tab" data-bs-target="#publishers" type="button" role="tab">
-                <?php echo Text::_('COM_GAMES_FIELD_PUBLISHERS_LABEL'); ?>
-                <span class="badge bg-secondary" id="publishers-count"><?php echo count($publishers); ?></span>
-            </button>
-        </li>
-    </ul>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'gameTab', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]); ?>
 
-    <div class="tab-content" id="gameTabContent">
-        <!-- Details Tab -->
-        <div class="tab-pane fade show active" id="details" role="tabpanel">
-            <div class="main-card p-3">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <?php echo $this->form->renderField('name'); ?>
-                        <?php echo $this->form->renderField('slug'); ?>
-                        <?php echo $this->form->renderField('release_date'); ?>
-                        <?php echo $this->form->renderField('image'); ?>
-                        <?php echo $this->form->renderField('description'); ?>
-                    </div>
-                    <div class="col-lg-3">
-                        <?php echo $this->form->renderField('state'); ?>
-                        <?php echo $this->form->renderField('is_approved'); ?>
-                    </div>
+        <?php echo HTMLHelper::_('uitab.addTab', 'gameTab', 'details', Text::_('COM_GAMES_TAB_DETAILS')); ?>
+            <div class="row">
+                <div class="col-lg-9">
+                    <?php echo $this->form->renderField('name'); ?>
+                    <?php echo $this->form->renderField('slug'); ?>
+                    <?php echo $this->form->renderField('release_date'); ?>
+                    <?php echo $this->form->renderField('image'); ?>
+                    <?php echo $this->form->renderField('description'); ?>
+                </div>
+                <div class="col-lg-3">
+                    <?php echo $this->form->renderField('state'); ?>
+                    <?php echo $this->form->renderField('is_approved'); ?>
                 </div>
             </div>
-        </div>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <!-- Developers Tab -->
-        <div class="tab-pane fade" id="developers" role="tabpanel">
-            <div class="main-card p-3">
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="developer-search"
-                                   placeholder="<?php echo Text::_('COM_GAMES_SEARCH_COMPANY'); ?>">
-                            <button class="btn btn-outline-secondary" type="button" id="developer-search-btn">
-                                <span class="icon-search" aria-hidden="true"></span>
-                                <?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
-                            </button>
-                        </div>
-                        <div id="developer-results" class="list-group mt-2" style="display:none;"></div>
+        <?php echo HTMLHelper::_('uitab.addTab', 'gameTab', 'developers', Text::_('COM_GAMES_FIELD_DEVELOPERS_LABEL') . ' <span class="badge bg-secondary" id="developers-count">' . count($developers) . '</span>'); ?>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="developer-search"
+                               placeholder="<?php echo Text::_('COM_GAMES_SEARCH_COMPANY'); ?>">
+                        <button class="btn btn-outline-secondary" type="button" id="developer-search-btn">
+                            <span class="icon-search" aria-hidden="true"></span>
+                            <?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
+                        </button>
                     </div>
+                    <div id="developer-results" class="list-group mt-2" style="display:none;"></div>
                 </div>
-                <table class="table" id="developer-list">
-                    <thead>
-                        <tr>
-                            <th><?php echo Text::_('COM_GAMES_FIELD_NAME_LABEL'); ?></th>
-                            <th class="w-10"><?php echo Text::_('JACTION_DELETE'); ?></th>
+            </div>
+            <table class="table" id="developer-list">
+                <thead>
+                    <tr>
+                        <th><?php echo Text::_('COM_GAMES_FIELD_NAME_LABEL'); ?></th>
+                        <th class="w-10"><?php echo Text::_('JACTION_DELETE'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($developers as $dev) : ?>
+                        <tr data-id="<?php echo $dev->id; ?>">
+                            <td><?php echo $this->escape($dev->name); ?></td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger remove-relation" data-type="developers" data-id="<?php echo $dev->id; ?>">
+                                    <span class="icon-times" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                            <input type="hidden" name="jform[developers][]" value="<?php echo $dev->id; ?>">
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($developers as $dev) : ?>
-                            <tr data-id="<?php echo $dev->id; ?>">
-                                <td><?php echo $this->escape($dev->name); ?></td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-danger remove-relation" data-type="developers" data-id="<?php echo $dev->id; ?>">
-                                        <span class="icon-times" aria-hidden="true"></span>
-                                    </button>
-                                </td>
-                                <input type="hidden" name="jform[developers][]" value="<?php echo $dev->id; ?>">
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <!-- Publishers Tab -->
-        <div class="tab-pane fade" id="publishers" role="tabpanel">
-            <div class="main-card p-3">
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="publisher-search"
-                                   placeholder="<?php echo Text::_('COM_GAMES_SEARCH_COMPANY'); ?>">
-                            <button class="btn btn-outline-secondary" type="button" id="publisher-search-btn">
-                                <span class="icon-search" aria-hidden="true"></span>
-                                <?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
-                            </button>
-                        </div>
-                        <div id="publisher-results" class="list-group mt-2" style="display:none;"></div>
+        <?php echo HTMLHelper::_('uitab.addTab', 'gameTab', 'publishers', Text::_('COM_GAMES_FIELD_PUBLISHERS_LABEL') . ' <span class="badge bg-secondary" id="publishers-count">' . count($publishers) . '</span>'); ?>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="publisher-search"
+                               placeholder="<?php echo Text::_('COM_GAMES_SEARCH_COMPANY'); ?>">
+                        <button class="btn btn-outline-secondary" type="button" id="publisher-search-btn">
+                            <span class="icon-search" aria-hidden="true"></span>
+                            <?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?>
+                        </button>
                     </div>
+                    <div id="publisher-results" class="list-group mt-2" style="display:none;"></div>
                 </div>
-                <table class="table" id="publisher-list">
-                    <thead>
-                        <tr>
-                            <th><?php echo Text::_('COM_GAMES_FIELD_NAME_LABEL'); ?></th>
-                            <th class="w-10"><?php echo Text::_('JACTION_DELETE'); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($publishers as $pub) : ?>
-                            <tr data-id="<?php echo $pub->id; ?>">
-                                <td><?php echo $this->escape($pub->name); ?></td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-danger remove-relation" data-type="publishers" data-id="<?php echo $pub->id; ?>">
-                                        <span class="icon-times" aria-hidden="true"></span>
-                                    </button>
-                                </td>
-                                <input type="hidden" name="jform[publishers][]" value="<?php echo $pub->id; ?>">
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
             </div>
-        </div>
-    </div>
+            <table class="table" id="publisher-list">
+                <thead>
+                    <tr>
+                        <th><?php echo Text::_('COM_GAMES_FIELD_NAME_LABEL'); ?></th>
+                        <th class="w-10"><?php echo Text::_('JACTION_DELETE'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($publishers as $pub) : ?>
+                        <tr data-id="<?php echo $pub->id; ?>">
+                            <td><?php echo $this->escape($pub->name); ?></td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger remove-relation" data-type="publishers" data-id="<?php echo $pub->id; ?>">
+                                    <span class="icon-times" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                            <input type="hidden" name="jform[publishers][]" value="<?php echo $pub->id; ?>">
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
@@ -150,10 +123,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchUrl = '<?php echo Route::_('index.php?option=com_games&task=ajax.searchCompanies&format=json', false); ?>';
 
     function initRelationTab(type) {
-        const searchInput = document.getElementById(type.slice(0, -1) + '-search');
-        const searchBtn = document.getElementById(type.slice(0, -1) + '-search-btn');
-        const resultsDiv = document.getElementById(type.slice(0, -1) + '-results');
-        const tbody = document.querySelector('#' + type.slice(0, -1) + '-list tbody');
+        const prefix = type.slice(0, -1);
+        const searchInput = document.getElementById(prefix + '-search');
+        const searchBtn = document.getElementById(prefix + '-search-btn');
+        const resultsDiv = document.getElementById(prefix + '-results');
+        const tbody = document.querySelector('#' + prefix + '-list tbody');
         const countBadge = document.getElementById(type + '-count');
 
         function updateCount() {
