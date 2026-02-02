@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_GAMES_DLC_DETAIL" option="COM_GAMES_DLC_DETAIL_DESC">
+        <message><![CDATA[COM_GAMES_DLC_DETAIL_DESC]]></message>
+    </layout>
+</metadata>

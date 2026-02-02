@@ -15,18 +15,23 @@ class HtmlView extends BaseHtmlView
     protected $item;
     public $developers = [];
     public $publishers = [];
+    public $dlcs = [];
+    public $platforms = [];
 
     public function display($tpl = null): void
     {
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
 
-        if ($this->item && $this->item->id) {
-            $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = Factory::getContainer()->get('DatabaseDriver');
 
+        if ($this->item && $this->item->id) {
             $this->developers = $this->loadRelatedCompanies($db, '#__game_developers', (int) $this->item->id);
             $this->publishers = $this->loadRelatedCompanies($db, '#__game_publishers', (int) $this->item->id);
+            $this->dlcs = $this->loadDlcs($db, (int) $this->item->id);
         }
+
+        $this->platforms = $this->loadPlatforms($db);
 
         $this->addToolbar();
         parent::display($tpl);
@@ -41,6 +46,34 @@ class HtmlView extends BaseHtmlView
             ->where($db->quoteName('r.game_id') . ' = :gameId')
             ->bind(':gameId', $gameId, \Joomla\Database\ParameterType::INTEGER)
             ->order('c.name ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    private function loadDlcs($db, int $gameId): array
+    {
+        $query = $db->getQuery(true)
+            ->select('d.*, p.name AS platform_name')
+            ->from($db->quoteName('#__game_dlcs', 'd'))
+            ->join('LEFT', $db->quoteName('#__game_platforms', 'p') . ' ON p.id = d.platform_id')
+            ->where($db->quoteName('d.game_id') . ' = :gameId')
+            ->bind(':gameId', $gameId, \Joomla\Database\ParameterType::INTEGER)
+            ->order('d.name ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    private function loadPlatforms($db): array
+    {
+        $query = $db->getQuery(true)
+            ->select('id, name')
+            ->from($db->quoteName('#__game_platforms'))
+            ->where($db->quoteName('state') . ' = 1')
+            ->order('name ASC');
 
         $db->setQuery($query);
 

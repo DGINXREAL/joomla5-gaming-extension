@@ -61,6 +61,32 @@ $item = $this->item;
         <?php echo $item->description; ?>
     </div>
 
+    <?php if (!empty($item->dlcs)) : ?>
+        <div class="game-dlcs mt-4">
+            <h2><?php echo Text::_('COM_GAMES_DLCS'); ?></h2>
+            <div class="list-group">
+                <?php foreach ($item->dlcs as $dlc) : ?>
+                    <a href="<?php echo Route::_('index.php?option=com_games&view=dlc&slug=' . $dlc->slug); ?>" class="list-group-item list-group-item-action">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong><?php echo $this->escape($dlc->name); ?></strong>
+                                <?php if (!empty($dlc->platform_name)) : ?>
+                                    <span class="badge bg-secondary ms-2"><?php echo $this->escape($dlc->platform_name); ?></span>
+                                <?php endif; ?>
+                                <?php if (!empty($dlc->deck)) : ?>
+                                    <br><small class="text-muted"><?php echo $this->escape($dlc->deck); ?></small>
+                                <?php endif; ?>
+                            </div>
+                            <?php if ($dlc->released_at) : ?>
+                                <small class="text-muted"><?php echo HTMLHelper::_('date', $dlc->released_at, Text::_('DATE_FORMAT_LC4')); ?></small>
+                            <?php endif; ?>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <div class="mt-4">
         <a href="<?php echo Route::_('index.php?option=com_games&view=games'); ?>" class="btn btn-secondary">
             <?php echo Text::_('COM_GAMES_BACK_TO_LIST'); ?>

@@ -14,9 +14,12 @@ HTMLHelper::_('behavior.keepalive');
 
 $developers = $this->developers;
 $publishers = $this->publishers;
+$dlcs       = $this->dlcs;
+$platforms  = $this->platforms;
+$gameId     = (int) $this->item->id;
 ?>
 
-<form action="<?php echo Route::_('index.php?option=com_games&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo Route::_('index.php?option=com_games&layout=edit&id=' . $gameId); ?>"
       method="post" name="adminForm" id="adminForm" class="form-validate">
 
     <?php echo HTMLHelper::_('uitab.startTabSet', 'gameTab', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]); ?>
@@ -111,6 +114,103 @@ $publishers = $this->publishers;
             </table>
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
+        <?php echo HTMLHelper::_('uitab.addTab', 'gameTab', 'dlcs', Text::_('COM_GAMES_TAB_DLCS') . ' <span class="badge bg-secondary" id="dlcs-count">' . count($dlcs) . '</span>'); ?>
+            <?php if ($gameId > 0) : ?>
+                <div class="card mb-3" id="dlc-form-card">
+                    <div class="card-header">
+                        <strong id="dlc-form-title"><?php echo Text::_('COM_GAMES_DLC_NEW'); ?></strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_NAME_LABEL'); ?></label>
+                                    <input type="text" class="form-control" id="dlc-name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_SLUG_LABEL'); ?></label>
+                                    <input type="text" class="form-control" id="dlc-slug" placeholder="<?php echo Text::_('COM_GAMES_FIELD_SLUG_HINT'); ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_PLATFORM_LABEL'); ?></label>
+                                    <select class="form-select" id="dlc-platform_id">
+                                        <option value="">- <?php echo Text::_('COM_GAMES_SELECT_PLATFORM'); ?> -</option>
+                                        <?php foreach ($platforms as $plat) : ?>
+                                            <option value="<?php echo $plat->id; ?>"><?php echo $this->escape($plat->name); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_RELEASED_AT_LABEL'); ?></label>
+                                    <input type="date" class="form-control" id="dlc-released_at">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_DECK_LABEL'); ?></label>
+                            <input type="text" class="form-control" id="dlc-deck">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_DESCRIPTION_LABEL'); ?></label>
+                            <textarea class="form-control" id="dlc-description" rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><?php echo Text::_('COM_GAMES_FIELD_IMAGE_LABEL'); ?></label>
+                            <input type="text" class="form-control" id="dlc-image_id" placeholder="images/...">
+                        </div>
+                        <input type="hidden" id="dlc-edit-id" value="">
+                        <button type="button" class="btn btn-success" id="dlc-save-btn">
+                            <span class="icon-save" aria-hidden="true"></span>
+                            <?php echo Text::_('JAPPLY'); ?>
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="dlc-cancel-btn" style="display:none;">
+                            <?php echo Text::_('JCANCEL'); ?>
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table" id="dlc-list">
+                    <thead>
+                        <tr>
+                            <th><?php echo Text::_('COM_GAMES_FIELD_NAME_LABEL'); ?></th>
+                            <th><?php echo Text::_('COM_GAMES_FIELD_PLATFORM_LABEL'); ?></th>
+                            <th><?php echo Text::_('COM_GAMES_FIELD_RELEASED_AT_LABEL'); ?></th>
+                            <th class="w-20"><?php echo Text::_('JACTION_EDIT'); ?> / <?php echo Text::_('JACTION_DELETE'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dlcs as $dlc) : ?>
+                            <tr data-id="<?php echo $dlc->id; ?>">
+                                <td><?php echo $this->escape($dlc->name); ?></td>
+                                <td><?php echo $this->escape($dlc->platform_name ?? '—'); ?></td>
+                                <td><?php echo $dlc->released_at ?: '—'; ?></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary dlc-edit-btn" data-id="<?php echo $dlc->id; ?>">
+                                        <span class="icon-pencil-alt" aria-hidden="true"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger dlc-delete-btn" data-id="<?php echo $dlc->id; ?>">
+                                        <span class="icon-times" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+                <div class="alert alert-info">
+                    <?php echo Text::_('COM_GAMES_DLC_SAVE_GAME_FIRST'); ?>
+                </div>
+            <?php endif; ?>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
     <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     <input type="hidden" name="task" value="">
@@ -121,7 +221,9 @@ $publishers = $this->publishers;
 document.addEventListener('DOMContentLoaded', function() {
     const token = '<?php echo Session::getFormToken(); ?>';
     const searchUrl = '<?php echo Route::_('index.php?option=com_games&task=ajax.searchCompanies&format=json', false); ?>';
+    const gameId = <?php echo $gameId; ?>;
 
+    // --- Relation tabs (developers/publishers) ---
     function initRelationTab(type) {
         const prefix = type.slice(0, -1);
         const searchInput = document.getElementById(prefix + '-search');
@@ -204,5 +306,121 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initRelationTab('developers');
     initRelationTab('publishers');
+
+    // --- DLC tab ---
+    if (gameId > 0) {
+        const dlcFields = ['name', 'slug', 'platform_id', 'released_at', 'deck', 'description', 'image_id'];
+        const dlcSaveBtn = document.getElementById('dlc-save-btn');
+        const dlcCancelBtn = document.getElementById('dlc-cancel-btn');
+        const dlcEditId = document.getElementById('dlc-edit-id');
+        const dlcFormTitle = document.getElementById('dlc-form-title');
+        const dlcTbody = document.querySelector('#dlc-list tbody');
+        const dlcCountBadge = document.getElementById('dlcs-count');
+        const saveDlcUrl = '<?php echo Route::_('index.php?option=com_games&task=ajax.saveDlc&format=json', false); ?>';
+        const deleteDlcUrl = '<?php echo Route::_('index.php?option=com_games&task=ajax.deleteDlc&format=json', false); ?>';
+        const getDlcsUrl = '<?php echo Route::_('index.php?option=com_games&task=ajax.getDlcs&format=json', false); ?>';
+
+        function updateDlcCount() {
+            dlcCountBadge.textContent = dlcTbody.querySelectorAll('tr').length;
+        }
+
+        function clearDlcForm() {
+            dlcFields.forEach(f => { document.getElementById('dlc-' + f).value = ''; });
+            dlcEditId.value = '';
+            dlcFormTitle.textContent = '<?php echo Text::_('COM_GAMES_DLC_NEW', true); ?>';
+            dlcCancelBtn.style.display = 'none';
+        }
+
+        function loadDlcIntoForm(dlcData) {
+            dlcEditId.value = dlcData.id;
+            dlcFields.forEach(f => {
+                document.getElementById('dlc-' + f).value = dlcData[f] || '';
+            });
+            dlcFormTitle.textContent = '<?php echo Text::_('COM_GAMES_DLC_EDIT', true); ?>';
+            dlcCancelBtn.style.display = 'inline-block';
+        }
+
+        dlcSaveBtn.addEventListener('click', function() {
+            const name = document.getElementById('dlc-name').value.trim();
+            if (!name) { alert('Name is required'); return; }
+
+            const params = new URLSearchParams();
+            params.append(token, '1');
+            params.append('dlc[game_id]', gameId);
+            if (dlcEditId.value) params.append('dlc[id]', dlcEditId.value);
+            dlcFields.forEach(f => {
+                params.append('dlc[' + f + ']', document.getElementById('dlc-' + f).value);
+            });
+
+            fetch(saveDlcUrl, { method: 'POST', body: params })
+                .then(r => r.json())
+                .then(response => {
+                    if (response.success) {
+                        refreshDlcList();
+                        clearDlcForm();
+                    } else {
+                        alert(response.message || 'Error saving DLC');
+                    }
+                });
+        });
+
+        dlcCancelBtn.addEventListener('click', clearDlcForm);
+
+        function refreshDlcList() {
+            fetch(getDlcsUrl + '&game_id=' + gameId + '&' + token + '=1')
+                .then(r => r.json())
+                .then(response => {
+                    const data = response.data || [];
+                    dlcTbody.innerHTML = '';
+                    data.forEach(function(dlc) {
+                        const tr = document.createElement('tr');
+                        tr.dataset.id = dlc.id;
+                        tr.innerHTML =
+                            '<td>' + escapeHtml(dlc.name) + '</td>' +
+                            '<td>' + escapeHtml(dlc.platform_name || '—') + '</td>' +
+                            '<td>' + (dlc.released_at || '—') + '</td>' +
+                            '<td>' +
+                                '<button type="button" class="btn btn-sm btn-primary dlc-edit-btn" data-id="' + dlc.id + '">' +
+                                    '<span class="icon-pencil-alt" aria-hidden="true"></span></button> ' +
+                                '<button type="button" class="btn btn-sm btn-danger dlc-delete-btn" data-id="' + dlc.id + '">' +
+                                    '<span class="icon-times" aria-hidden="true"></span></button>' +
+                            '</td>';
+                        dlcTbody.appendChild(tr);
+                    });
+                    updateDlcCount();
+                });
+        }
+
+        dlcTbody.addEventListener('click', function(e) {
+            const editBtn = e.target.closest('.dlc-edit-btn');
+            const deleteBtn = e.target.closest('.dlc-delete-btn');
+
+            if (editBtn) {
+                const id = editBtn.dataset.id;
+                fetch(getDlcsUrl + '&game_id=' + gameId + '&' + token + '=1')
+                    .then(r => r.json())
+                    .then(response => {
+                        const dlc = (response.data || []).find(d => String(d.id) === String(id));
+                        if (dlc) loadDlcIntoForm(dlc);
+                    });
+            }
+
+            if (deleteBtn) {
+                if (!confirm('<?php echo Text::_('COM_GAMES_DLC_CONFIRM_DELETE', true); ?>')) return;
+                const id = deleteBtn.dataset.id;
+                const params = new URLSearchParams();
+                params.append(token, '1');
+                params.append('id', id);
+                fetch(deleteDlcUrl, { method: 'POST', body: params })
+                    .then(r => r.json())
+                    .then(response => {
+                        if (response.success) {
+                            refreshDlcList();
+                            if (dlcEditId.value === String(id)) clearDlcForm();
+                        }
+                    });
+            }
+        });
+    }
 });
 </script>

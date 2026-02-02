@@ -68,3 +68,23 @@ CREATE TABLE IF NOT EXISTS `#__game_platforms` (
     KEY `idx_state` (`state`),
     KEY `idx_company_id` (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `#__game_dlcs` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NOT NULL DEFAULT '',
+    `slug` varchar(255) NOT NULL DEFAULT '',
+    `game_id` int unsigned NOT NULL,
+    `platform_id` int unsigned DEFAULT NULL,
+    `deck` text NOT NULL,
+    `description` text NOT NULL,
+    `image_id` varchar(1024) NOT NULL DEFAULT '',
+    `released_at` date DEFAULT NULL,
+    `state` tinyint NOT NULL DEFAULT 1,
+    `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_slug` (`slug`),
+    KEY `idx_game_id` (`game_id`),
+    KEY `idx_platform_id` (`platform_id`),
+    KEY `idx_state` (`state`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
