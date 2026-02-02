@@ -34,6 +34,6 @@ class HtmlView extends BaseHtmlView
         ToolbarHelper::addNew('company.add');
         ToolbarHelper::publish('companies.publish', 'JTOOLBAR_PUBLISH', true);
         ToolbarHelper::unpublish('companies.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        ToolbarHelper::delete('companies.delete', 'JTOOLBAR_DELETE', true);
+        ToolbarHelper::deleteList('', 'companies.delete', 'JTOOLBAR_DELETE');
     }
 }
