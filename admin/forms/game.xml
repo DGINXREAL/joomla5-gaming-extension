@@ -39,6 +39,22 @@
         />
 
         <field
+            name="image"
+            type="media"
+            label="COM_GAMES_FIELD_IMAGE_LABEL"
+        />
+
+        <field
+            name="is_approved"
+            type="list"
+            label="COM_GAMES_FIELD_IS_APPROVED_LABEL"
+            default="0"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
             name="state"
             type="list"
             label="JSTATUS"

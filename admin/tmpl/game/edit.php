@@ -21,10 +21,12 @@ HTMLHelper::_('behavior.keepalive');
                 <?php echo $this->form->renderField('name'); ?>
                 <?php echo $this->form->renderField('slug'); ?>
                 <?php echo $this->form->renderField('release_date'); ?>
+                <?php echo $this->form->renderField('image'); ?>
                 <?php echo $this->form->renderField('description'); ?>
             </div>
             <div class="col-lg-3">
                 <?php echo $this->form->renderField('state'); ?>
+                <?php echo $this->form->renderField('is_approved'); ?>
             </div>
         </div>
     </div>

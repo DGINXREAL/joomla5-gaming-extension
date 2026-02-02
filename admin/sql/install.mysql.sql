@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS `#__games` (
     `slug` varchar(255) NOT NULL DEFAULT '',
     `description` text NOT NULL,
     `release_date` date DEFAULT NULL,
+    `image` varchar(1024) NOT NULL DEFAULT '',
+    `is_approved` tinyint unsigned NOT NULL DEFAULT 0,
     `state` tinyint NOT NULL DEFAULT 1,
     `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

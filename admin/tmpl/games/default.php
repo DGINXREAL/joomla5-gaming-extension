@@ -37,6 +37,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                 <th scope="col">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_GAMES_FIELD_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
                                 </th>
+                                <th scope="col" class="w-5 text-center">
+                                    <?php echo Text::_('COM_GAMES_FIELD_IS_APPROVED_LABEL'); ?>
+                                </th>
                                 <th scope="col" class="w-15">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'COM_GAMES_FIELD_RELEASE_DATE_LABEL', 'a.release_date', $listDirn, $listOrder); ?>
                                 </th>
@@ -59,6 +62,13 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                             <?php echo $this->escape($item->name); ?>
                                         </a>
                                         <div class="small"><?php echo Text::_('COM_GAMES_FIELD_SLUG_LABEL'); ?>: <?php echo $this->escape($item->slug); ?></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if ($item->is_approved) : ?>
+                                            <span class="icon-publish" aria-hidden="true"></span>
+                                        <?php else : ?>
+                                            <span class="icon-unpublish" aria-hidden="true"></span>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php echo $item->release_date ? HTMLHelper::_('date', $item->release_date, Text::_('DATE_FORMAT_LC4')) : '-'; ?>
