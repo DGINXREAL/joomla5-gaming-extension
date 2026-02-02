@@ -69,8 +69,12 @@ class GameModel extends AdminModel
 
     public function save($data): bool
     {
-        $developers = $data['developers'] ?? [];
-        $publishers = $data['publishers'] ?? [];
+        // Read relations directly from request — they are not in $data
+        // because Joomla's form filtering strips unknown fields
+        $input      = Factory::getApplication()->getInput();
+        $jform      = $input->get('jform', [], 'array');
+        $developers = $jform['developers'] ?? [];
+        $publishers = $jform['publishers'] ?? [];
 
         unset($data['developers'], $data['publishers']);
 
